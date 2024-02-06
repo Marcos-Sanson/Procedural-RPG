@@ -1,7 +1,6 @@
 # CIS-350-Semester-Project
-## CIS 350 – Introduction to Software Engineering
 
-## Draft Final Estimated Effort
+## CIS 350 – Introduction to Software Engineering
 
 ### Team & Project Information:
 - Cover page with project name and names of team members

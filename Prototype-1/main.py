@@ -76,7 +76,9 @@ async def main(seed):
             for j in range(cluster_x, cluster_x + cluster_size):
                 terrain_grid[i][j] = water_img
 
+    # This section doesn't work properly! Needs to be fixed.
     # Add outline to water tiles for collision detection
+    # Original code inspired by Marcus Møller (https://github.com/marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
     for i in range(len(terrain_grid)):
         for j in range(len(terrain_grid[0])):
             if terrain_grid[i][j] == water_img:
@@ -111,14 +113,14 @@ async def main(seed):
         enemy_collided.append(False)  # Initialize collision status as False for each enemy
 
     while True:
-        # Needed to handle window-based quit events (non-pygame runs)
+        # Needed to handle window-based quite events (non-pygbag runs)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.VIDEORESIZE:  # Handle window resize event
                 screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)  # Update screen size
 
-        # Check if keys are currently pressed down
+        # Check if keys are _currently_ pressed down
         keys = pygame.key.get_pressed()
         new_x, new_y = x, y
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:

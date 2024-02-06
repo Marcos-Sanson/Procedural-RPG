@@ -7,8 +7,8 @@
 - Brief Project description
 - List of features supported in each release
 - Sample screenshots of application
-  - Draft: 10%
-  - Final: 10%
+  - Draft: 10
+  - Final: 10
   - Estimated Effort: 5%
 
 ### Planning:
@@ -16,49 +16,49 @@
 - Plan for Definition, Development, Verification, Maintenance & Umbrella Activities
 - Responsibilities/Roles of each team member
 - Gantt Chart of features / tasks
-  - Draft: 15%
-  - Final: 10%
+  - Draft: 15
+  - Final: 10
   - Estimated Effort: 10%
 
 ### Specification:
 - Use case diagram and use case descriptions
 - Requirements and traceability to use cases
-  - Draft: 15%
-  - Final: 10%
+  - Draft: 15
+  - Final: 10
   - Estimated Effort: 10%
 
 ### Design:
 - Class diagrams and class descriptions
 - Function decomposition and descriptions
-  - Draft: 30%
-  - Final: 20%
+  - Draft: 30
+  - Final: 20
   - Estimated Effort: 5%
 
 ### Development:
 - Code standards report and assessment
 - Static analysis report and assessment
 - Generated code documentation in HTML or other output format
-  - Draft: 10%
-  - Final: 40%
+  - Draft: 10
+  - Final: 40
   - Estimated Effort: 15%
 
 ### Configuration Management:
 - Git log for the remote repository
 - URL to the remote Git repository
-  - Draft: 10%
-  - Final: 15%
+  - Draft: 10
+  - Final: 15
   - Estimated Effort: 10%
 
 ### Verification:
 - Unit and System / Integration Tests
 - Code coverage reports from:
   - Unit testing
-    - Draft: 5%
-    - Final: 45%
+    - Draft: 5
+    - Final: 45
     - Estimated Effort: 20%
   - System / Integration testing
-    - Draft: 5%
-    - Final: 45%
+    - Draft: 5
+    - Final: 45
     - Estimated Effort: 20%
 - Requirements Traceability
   - Draft: 5%
@@ -67,8 +67,8 @@
 
 ### Customer Acceptance Criteria:
 - Release Demo: How well do features work?
-  - Draft: 5%
-  - Final: 30%
+  - Draft: 5
+  - Final: 30
   - Estimated Effort: N/A
 
 ### Project Status / Postmortem:
@@ -76,11 +76,11 @@
 - Current Earned Value and Metrics
 - Justification of any imperfect code coverage, bug reports, ...
 - Lessons Learned
-  - Draft: 25%
-  - Final: 45%
+  - Draft: 25
+  - Final: 45
   - Estimated Effort: 25%
 
 ### Total
-- Draft: 125% 
-- Final: 225% 
+- Draft: 125
+- Final: 225
 - Estimated Effort: 100%

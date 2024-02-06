@@ -138,6 +138,7 @@ async def main(seed):
         new_x = max(0, min(new_x, screen.get_width() - character_rect.width))
         new_y = max(0, min(new_y, screen.get_height() - character_rect.height))
 
+        # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
         scaled_tile_size = (screen.get_width() / len(terrain_grid[0]), screen.get_height() / len(terrain_grid))
@@ -198,7 +199,7 @@ async def main(seed):
         # Draw enemies, replaced with death animation if collided
         for i, enemy_pos in enumerate(enemy_positions):
             if enemy_collided[i]:
-                # Draw death animation (scaled up)
+                # Draw death animation
                 death_index = (pygame.time.get_ticks() // 200) % len(enemy_death_imgs)
                 death_img = pygame.transform.scale(enemy_death_imgs[death_index], (60, 60))
                 screen.blit(death_img, enemy_pos)

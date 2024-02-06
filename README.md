@@ -52,17 +52,11 @@
 ### Verification:
 - Unit and System / Integration Tests
 - Code coverage reports from:
-  - Unit testing
-    - Draft: 5
-    - Final: 45
-    - Estimated Effort: 20%
+  - Unit testing, and
   - System / Integration testing
-    - Draft: 5
-    - Final: 45
-    - Estimated Effort: 20%
 - Requirements Traceability
-  - Draft: 5%
-  - Final: 45%
+  - Draft: 5
+  - Final: 45
   - Estimated Effort: 20%
 
 ### Customer Acceptance Criteria:

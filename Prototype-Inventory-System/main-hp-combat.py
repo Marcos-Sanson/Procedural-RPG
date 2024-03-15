@@ -1,24 +1,26 @@
+'''import pygame
+import asyncio
+
+
+class player:
+
+    def __init__(self, HP, x, y):
+        self.HP = HP
+        self.x = x
+        self.y = y
+
+
+class enemy:
+
+    def __init__(self, HP, x, y):
+        self.HP = HP
+        self.x = x
+        self.y = y
+'''
+
 import pygame
 import asyncio
 import random
-
-
-class Player:
-
-    def __init__(self, HP, x, y):
-        self.HP = HP
-        self.x = x
-        self.y = y
-
-
-class Enemy:
-
-    def __init__(self, HP, x, y):
-        self.HP = HP
-        self.x = x
-        self.y = y
-
-
 
 async def main(seed):
     """
@@ -148,10 +150,8 @@ async def main(seed):
         # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
-        ### Quick fix to make the water collision work
-        scaled_tile_size = (tile_size[0]*2,tile_size[1]*2)  #(screen.get_width() / len(terrain_grid[0]), screen.get_height() / len(terrain_grid))
-        character_box = character_rect.move(new_x, new_y).scale_by(2).move(character_rect.width/2, character_rect.height/2)
-        ###
+        scaled_tile_size = (screen.get_width() / len(terrain_grid[0]), screen.get_height() / len(terrain_grid))
+        character_box = character_rect.move(new_x, new_y)
         for i in range(len(terrain_grid)):
             for j in range(len(terrain_grid[0])):
                 if terrain_grid[i][j] in [water_img, "outline"]:

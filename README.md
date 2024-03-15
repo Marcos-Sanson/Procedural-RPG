@@ -2,6 +2,10 @@
 
 ## CIS 350 – Introduction to Software Engineering
 
+## Project: Procedurally-generated 2D Role-playing Game
+Developed by Marcos Sanson, Jerod Muilenburg, William Krol, Brendon Do, Ely Miller
+CIS 350: Winter 2024
+
 ### Team & Project Information:
 - Cover page with project name and names of team members
 - Brief Project description

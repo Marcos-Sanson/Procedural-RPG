@@ -19,7 +19,6 @@ https://game-endeavor.itch.io/mystic-woods
 
 Date: March 25, 2024
 """
-
 import pygame
 import asyncio
 import random

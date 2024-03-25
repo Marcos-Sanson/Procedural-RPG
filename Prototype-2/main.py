@@ -1,3 +1,25 @@
+"""
+CIS 350 - Introduction to Software Engineering
+Winter 2024 Semester Project
+Authors: Marcos Sanson, Jerod Muilenburg, William Krol, Brendon Do, Ely Miller
+
+Prototype 2: Simple Procedurally-Generated Game
+
+A simple game where a character navigates through a terrain with objects and water.
+Has the following features:
+- Character movement with arrow keys or WASD
+- Collision detection with water and objects (work in progress)
+- Randomly generated terrain with clusters of water (work in progress)
+- Randomly generated objects with collision detection (work in progress)
+
+Original sprite movement code from Dr. Byron DeVries.
+
+Original art, sprites, and images from Game Endeavor's Mystic Woods downloadable asset pack (Free Version): 
+https://game-endeavor.itch.io/mystic-woods
+
+Date: March 25, 2024
+"""
+
 import pygame
 import asyncio
 import random

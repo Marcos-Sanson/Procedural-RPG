@@ -37,6 +37,10 @@ class Chest(GameObject):
     def open(self):
         self.opened = True
         self.sprite = self.open_sprite
+
+class Tree(GameObject):
+    def __init__(self, sprite, x, y):
+        super().__init__(sprite, x, y)
         
 
 class Entity(GameObject):
@@ -65,18 +69,16 @@ class Player(Entity):
         
         # change character sprite according to movement
         if move[1] < -0.1:
-            if abs(move[0]) > 0.1:
-                self.sprite_ind = 1
-            else:
+            self.sprite_ind = 1
+            if abs(move[0]) < 0.1:
                 self.sprite_ind = 0
         elif -0.1 < move[1] < 0.1:
             if abs(move[0]) > 0.1:
-                self.sprite_ind = 2
+                self.sprite_ind = 1
         else:
-            if abs(move[0]) > 0.1:
-                self.sprite_ind = 3
-            else:
-                self.sprite_ind = 4
+            self.sprite_ind = 1
+            if abs(move[0]) < 0.1:
+                self.sprite_ind = 2
         self.sprite = self.sprites[self.sprite_ind]
         if move[0] < -0.1:
             self.mirror()
@@ -127,6 +129,7 @@ class Game:
         self.player = None
         self.enemies = []
         self.objects = []
+        self.trees = []
         self.default_img = pygame.image.load('grass.png').convert_alpha()
         self.terrain_grid = [[Tile(self.default_img, i*self.tile_size[0], j*self.tile_size[1])
                               for j in range(grid_size[0])] for i in range(grid_size[1])]
@@ -138,27 +141,23 @@ class Game:
     def init(self):
         # Load character image
         character_img = pygame.image.load('character.png').convert_alpha()
-        #character_img = pygame.transform.scale(character_img, (60, 80))  # Scale up character image
         character_rect = character_img.get_rect()
         character_hp = 10
-        self.player = Player(character_hp, character_img, 0, 0)
+        start_point = (12, 3)
+        self.player = Player(character_hp, character_img, start_point[0]*self.tile_size[0], start_point[1]*self.tile_size[1])
 
         # Load enemy images
         enemy_img1 = pygame.image.load('enemy1.png').convert_alpha()
-        #enemy_img1 = pygame.transform.scale(enemy_img1, (60, 60))  # Scale up enemy image
         enemy_img2 = pygame.image.load('enemy2.png').convert_alpha()
-        #enemy_img2 = pygame.transform.scale(enemy_img2, (60, 60))  # Scale up enemy image
-        #enemy_death_imgs = [pygame.transform.scale(pygame.image.load('enemy_death1.png').convert_alpha(), (180, 240)),
-        #                    pygame.transform.scale(pygame.image.load('enemy_death2.png').convert_alpha(), (180, 240))]
         enemy_death_imgs = [pygame.image.load('enemy_death1.png').convert_alpha(),
                             pygame.image.load('enemy_death2.png').convert_alpha()]
         enemy_hp = []
 
         # Load object images
         object_img = pygame.image.load('object.png').convert_alpha()
-        #object_img = pygame.transform.scale(object_img, (50, 50))  # Scale up object image
         object_collision_img = pygame.image.load('object_collision.png').convert_alpha()
-        #object_collision_img = pygame.transform.scale(object_collision_img, (50, 50))  # Scale up collision object image
+        
+        tree_img = pygame.image.load('tree1.png').convert_alpha()
 
         # Load background images for different terrains
         self.grass_imgs = []
@@ -175,6 +174,7 @@ class Game:
         for r in range(len(self.terrain_grid)):
             for c in range(len(self.terrain_grid[r])):
                 self.terrain_grid[r][c].sprite = self.grass_imgs[random.randint(0, len(self.grass_imgs)-1)]
+        '''
         num_clusters = random.randint(3, 5)  # Random number of clusters
         for _ in range(num_clusters):
             cluster_size = random.randint(2, 7)  # Random size for each cluster
@@ -184,24 +184,8 @@ class Game:
                 for j in range(cluster_x, cluster_x + cluster_size):
                     self.terrain_grid[i][j].sprite = self.water_img
                     self.terrain_grid[i][j].can_collide = True
-
         '''
-        # This section doesn't work properly! Needs to be fixed.
-        # Add outline to water tiles for collision detection
-        # Original code inspired by Marcus Møller (https://github.com/marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
-        for i in range(len(self.terrain_grid)):
-            for j in range(len(self.terrain_grid[0])):
-                if self.terrain_grid[i][j] == self.water_img:
-                    # Check neighbors for grass tiles directly adjacent to water and mark them as outline
-                    if i > 0 and self.terrain_grid[i - 1][j] == self.grass_img:
-                        self.terrain_grid[i - 1][j] = "outline"
-                    if i < len(self.terrain_grid) - 1 and self.terrain_grid[i + 1][j] == self.grass_img:
-                        self.terrain_grid[i + 1][j] = "outline"
-                    if j > 0 and self.terrain_grid[i][j - 1] == self.grass_img:
-                        self.terrain_grid[i][j - 1] = "outline"
-                    if j < len(self.terrain_grid[0]) - 1 and self.terrain_grid[i][j + 1] == self.grass_img:
-                        self.terrain_grid[i][j + 1] = "outline"
-        '''
+        
 
         # Generate random positions for objects, avoiding water/walls
         num_objects = random.randint(1, 4)  # Random number of objects
@@ -213,19 +197,32 @@ class Game:
                 object_y = tile_y * self.tile_size[1]
                 obj = Chest(object_img, object_collision_img, object_x, object_y)
                 self.objects.append(obj)
+        
+        num_trees = random.randint(1, 3)  # Random number of objects
+        for _ in range(num_trees):
+            tile_x = random.randint(0, len(self.terrain_grid[0]) - 2)
+            tile_y = random.randint(1, len(self.terrain_grid) - 1)
+            if not self.terrain_grid[tile_y][tile_x].can_collide:
+                object_x = tile_x * self.tile_size[0]
+                object_y = (tile_y-1) * self.tile_size[1]
+                obj = Tree(tree_img, object_x, object_y)
+                self.trees.append(obj)
+                self.terrain_grid[tile_y][tile_x].can_collide = True
+                self.terrain_grid[tile_y][tile_x+1].can_collide = True
 
         # Generate random positions for enemy characters
         num_enemies = random.randint(1, 3)  # Random number of enemies
         for _ in range(num_enemies):
             enemy_hp = 10
-            enemy_x = random.randint(0, len(self.terrain_grid[0]) - 1) * self.tile_size[0]
-            enemy_y = random.randint(0, len(self.terrain_grid) - 1) * self.tile_size[1]
-            e = Slime(enemy_hp, enemy_img1, enemy_x, enemy_y)
-            self.enemies.append(e)
+            enemy_x = random.randint(0, len(self.terrain_grid[0]) - 1)
+            enemy_y = random.randint(0, len(self.terrain_grid) - 1)
+            if not self.terrain_grid[tile_y][tile_x].can_collide:
+                e = Slime(enemy_hp, enemy_img1, enemy_x * self.tile_size[0], enemy_y * self.tile_size[1])
+                self.enemies.append(e)
 
 
     '''
-    Primary game loop, including rendering, physics, game logic, etc.
+    Primary game loop, including drawing, physics, game logic, etc.
     '''
     def run(self):
         # Needed to handle window-based quite events (non-pygbag runs)
@@ -263,16 +260,17 @@ class Game:
         new_x, new_y = self.player.move(move_vector)
 
         # Check for out-of-bounds movement
-        print(new_y)
         new_x = max(0, min(new_x, self.screen.get_width()/self.expand_factor - self.player.rect.width))
         new_y = max(0, min(new_y, self.screen.get_height()/self.expand_factor - self.player.rect.height))
 
         # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
+        collision_direction = (0, 0)
         ### Quick fix to make the water collision work
         scaled_tile_size = (self.tile_size[0]*2, self.tile_size[1]*2)
-        character_box = self.player.rect.move(new_x, new_y).scale_by(3).move(self.player.rect.width, self.player.rect.height)
+        character_box = self.player.rect.move(new_x, new_y).scale_by(2).move(self.player.rect.width, self.player.rect.height)
+        print(character_box)
         ###
         for i in range(len(self.terrain_grid)):
             for j in range(len(self.terrain_grid[0])):
@@ -280,6 +278,8 @@ class Game:
                     water_rect = pygame.Rect(j * scaled_tile_size[0], i * scaled_tile_size[1],
                                              scaled_tile_size[0], scaled_tile_size[1])
                     if character_box.colliderect(water_rect):
+                        collision_direction = (character_box.x-j*scaled_tile_size[0],character_box.y-i*scaled_tile_size[1])
+                        collision_direction = collision_direction / np.linalg.norm(collision_direction)
                         collision_with_water = True
                         break
             if collision_with_water:
@@ -288,7 +288,14 @@ class Game:
         # Update character position if no collision
         if not collision_with_water:
             self.player.x, self.player.y = new_x, new_y
-            self.player.rect.topleft = (self.player.x, self.player.y)
+        else:
+            if move_vector[0] < 0 and collision_direction[0] < 0 or \
+                move_vector[0] > 0 and collision_direction[0] > 0:
+                self.player.x = new_x
+            if move_vector[1] < 0 and collision_direction[1] < 0 or \
+                move_vector[1] > 0 and collision_direction[1] > 0:
+                self.player.y = new_y
+        self.player.rect.topleft = (self.player.x, self.player.y)
 
         # Check for collision with objects
         for obj in self.objects:
@@ -324,14 +331,13 @@ class Game:
                 self.screen.blit(obj.open_sprite, obj.position)
             else:
                 self.screen.blit(obj.sprite, obj.position)
+                
+        for tree in self.trees:
+            self.screen.blit(tree.sprite, tree.position)
 
         # Draw enemies, replaced with death animation if collided
         for enemy in self.enemies:
-            if enemy.HP < 0:
-                death_img = pygame.transform.scale(enemy.sprite, (60, 60))
-                self.screen.blit(death_img, enemy.position)
-            else:
-                self.screen.blit(enemy.sprite, enemy.position)
+            self.screen.blit(enemy.sprite, enemy.position)
 
         # Draw character
         #self.screen.blit(self.player.sprite, self.player.position)
@@ -350,7 +356,7 @@ class Game:
     
     
 
-#seed = 12
+#seed = 13
 async def main(seed):
     """
     Main function to run the game.
@@ -370,4 +376,4 @@ async def main(seed):
         #await asyncio.sleep(0)  # Very important, and keep it 0
         
 
-asyncio.run(main(seed=12))  # Enter any seed number here to generate a different terrain and object/enemy positions
+asyncio.run(main(seed=13))  # Enter any seed number here to generate a different terrain and object/enemy positions

@@ -37,10 +37,6 @@ class Chest(GameObject):
     def open(self):
         self.opened = True
         self.sprite = self.open_sprite
-
-class Tree(GameObject):
-    def __init__(self, sprite, x, y):
-        super().__init__(sprite, x, y)
         
 
 class Entity(GameObject):
@@ -129,7 +125,6 @@ class Game:
         self.player = None
         self.enemies = []
         self.objects = []
-        self.trees = []
         self.default_img = pygame.image.load('grass.png').convert_alpha()
         self.terrain_grid = [[Tile(self.default_img, i*self.tile_size[0], j*self.tile_size[1])
                               for j in range(grid_size[0])] for i in range(grid_size[1])]
@@ -156,8 +151,6 @@ class Game:
         # Load object images
         object_img = pygame.image.load('object.png').convert_alpha()
         object_collision_img = pygame.image.load('object_collision.png').convert_alpha()
-        
-        tree_img = pygame.image.load('tree1.png').convert_alpha()
 
         # Load background images for different terrains
         self.grass_imgs = []
@@ -174,7 +167,7 @@ class Game:
         for r in range(len(self.terrain_grid)):
             for c in range(len(self.terrain_grid[r])):
                 self.terrain_grid[r][c].sprite = self.grass_imgs[random.randint(0, len(self.grass_imgs)-1)]
-        '''
+        
         num_clusters = random.randint(3, 5)  # Random number of clusters
         for _ in range(num_clusters):
             cluster_size = random.randint(2, 7)  # Random size for each cluster
@@ -184,7 +177,7 @@ class Game:
                 for j in range(cluster_x, cluster_x + cluster_size):
                     self.terrain_grid[i][j].sprite = self.water_img
                     self.terrain_grid[i][j].can_collide = True
-        '''
+        
         
 
         # Generate random positions for objects, avoiding water/walls
@@ -197,18 +190,6 @@ class Game:
                 object_y = tile_y * self.tile_size[1]
                 obj = Chest(object_img, object_collision_img, object_x, object_y)
                 self.objects.append(obj)
-        
-        num_trees = random.randint(1, 3)  # Random number of objects
-        for _ in range(num_trees):
-            tile_x = random.randint(0, len(self.terrain_grid[0]) - 2)
-            tile_y = random.randint(1, len(self.terrain_grid) - 1)
-            if not self.terrain_grid[tile_y][tile_x].can_collide:
-                object_x = tile_x * self.tile_size[0]
-                object_y = (tile_y-1) * self.tile_size[1]
-                obj = Tree(tree_img, object_x, object_y)
-                self.trees.append(obj)
-                self.terrain_grid[tile_y][tile_x].can_collide = True
-                self.terrain_grid[tile_y][tile_x+1].can_collide = True
 
         # Generate random positions for enemy characters
         num_enemies = random.randint(1, 3)  # Random number of enemies
@@ -270,7 +251,6 @@ class Game:
         ### Quick fix to make the water collision work
         scaled_tile_size = (self.tile_size[0]*2, self.tile_size[1]*2)
         character_box = self.player.rect.move(new_x, new_y).scale_by(2).move(self.player.rect.width, self.player.rect.height)
-        print(character_box)
         ###
         for i in range(len(self.terrain_grid)):
             for j in range(len(self.terrain_grid[0])):
@@ -331,9 +311,6 @@ class Game:
                 self.screen.blit(obj.open_sprite, obj.position)
             else:
                 self.screen.blit(obj.sprite, obj.position)
-                
-        for tree in self.trees:
-            self.screen.blit(tree.sprite, tree.position)
 
         # Draw enemies, replaced with death animation if collided
         for enemy in self.enemies:

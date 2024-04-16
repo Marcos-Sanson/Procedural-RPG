@@ -13,7 +13,8 @@ class TestStringMethods(unittest.TestCase):
     '''
     
     def test_movement(self):
-        self.assertTrue(True)
+        p = main.Player(10, 10, 10)
+        unittest.assertEquals(p.x,10)
 
 if __name__ == '__main__':
     unittest.main()

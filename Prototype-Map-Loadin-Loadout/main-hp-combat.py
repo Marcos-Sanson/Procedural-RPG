@@ -2,6 +2,8 @@ import pygame
 import asyncio
 import random
 
+import random
+
 
 class Player:
 
@@ -10,11 +12,25 @@ class Player:
         self.x = x
         self.y = y
 
+class Room:
+
+    def __int__(self, seed, w_neighbor, n_neighbor, s_neighbor, e_neighbor):
+        self.seed = seed
+        self.w_neighbor = w_neighbor
+        self.n_neighbor = n_neighbor
+        self.s_neighbor = s_neighbor
+        self.e_neighbor = e_neighbor
 
 class Enemy:
 
     def __init__(self, HP, x, y):
         self.HP = HP
+        self.x = x
+        self.y = y
+
+class Item:
+    def __int__(self, damage, x, y):
+        self.damage = damage
         self.x = x
         self.y = y
 
@@ -27,6 +43,7 @@ async def main(seed):
     Args:
         seed (int): The seed for random number generation.
     """
+
     random.seed(seed)  # Set the random seed
 
     clock = pygame.time.Clock()
@@ -39,6 +56,7 @@ async def main(seed):
     character_img = pygame.image.load('character.png').convert_alpha()
     character_img = pygame.transform.scale(character_img, (60, 80))  # Scale up character image
     character_rect = character_img.get_rect()
+    #character_rect.center = (screen.get_width() // 2, screen.get_height() // 2)
     character_hp = 10
 
     # Load enemy images
@@ -148,10 +166,13 @@ async def main(seed):
         # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
+
         ### Quick fix to make the water collision work
         scaled_tile_size = (tile_size[0]*2,tile_size[1]*2)  #(screen.get_width() / len(terrain_grid[0]), screen.get_height() / len(terrain_grid))
         character_box = character_rect.move(new_x, new_y).scale_by(2).move(character_rect.width/2, character_rect.height/2)
         ###
+
+
         for i in range(len(terrain_grid)):
             for j in range(len(terrain_grid[0])):
                 if terrain_grid[i][j] in [water_img, "outline"]:
@@ -163,9 +184,37 @@ async def main(seed):
                 break
 
         # Update character position if no collision
+
         if not collision_with_water:
             x, y = new_x, new_y
             character_rect.topleft = (x, y)
+
+        threshold = 10
+        new_seed = random.randint(0, 1000)  # Generate a new seed
+        #if character_rect.left < 1 or character_rect.right > (screen.get_width() - 1) or character_rect.top < 1 or character_rect.bottom > (screen.get_height() - 1):
+            #new_seed = random.randint(0, 1000)  # Generate a new seed
+            #print("Y")
+            #regenerate_map(new_seed)  # Call the function to regenerate the map
+
+
+        mid_x = screen.get_width() // 2
+        mid_y = screen.get_height() // 2
+        # Checks for collision with the middle-top
+        if character_rect.top < 1 and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
+            print("T")
+
+        # Checks for the collision with middle-bottom
+        elif character_rect.bottom > (screen.get_height() - 1) and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
+            print("B")
+
+        # Checks for collison with middle-right
+        elif character_rect.right > (screen.get_width() - 1) and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
+            print("R")
+
+        # Checks for collision with the middle-left
+        elif character_rect.left < 1 and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
+            print("L")
+
 
         # Check for collision with objects
         for i, object_pos in enumerate(object_positions):
@@ -227,4 +276,7 @@ async def main(seed):
         clock.tick(60)  # Wait until next frame (at 60 FPS)
         await asyncio.sleep(0)  # Very important, and keep it 0
 
-asyncio.run(main(seed=11))  # Enter any seed number here to generate a different terrain and object/enemy positions
+
+
+
+asyncio.run(main(seed=18))  # Enter any seed number here to generate a different terrain and object/enemy positions

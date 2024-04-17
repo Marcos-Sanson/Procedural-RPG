@@ -36,7 +36,7 @@ class Item:
 
 
 
-async def main(seed):
+async def main(seed, position):
     """
     Main function to run the game loop.
 
@@ -46,10 +46,15 @@ async def main(seed):
 
     random.seed(seed)  # Set the random seed
 
+
+    # Initialize the character's starting position
+    x, y = position
+
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((1000, 700), pygame.RESIZABLE)  # Make the window resizable
     delta = 5
-    x = y = 0
+    #x = y = 0
+    x, y = position
     counter = 0
 
     # Load character image
@@ -141,6 +146,7 @@ async def main(seed):
 
         # Check if keys are _currently_ pressed down
         keys = pygame.key.get_pressed()
+
         new_x, new_y = x, y
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             new_x -= delta
@@ -197,23 +203,32 @@ async def main(seed):
             #regenerate_map(new_seed)  # Call the function to regenerate the map
 
 
-        mid_x = screen.get_width() // 2
-        mid_y = screen.get_height() // 2
+        w = screen.get_width()
+        h = screen.get_height()
+        mid_x = w // 2
+        mid_y = h // 2
+        random_seed = random.randint(1, 20)
+
         # Checks for collision with the middle-top
         if character_rect.top < 1 and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
             print("T")
+            await main(18, position= (mid_x, mid_y))
+
 
         # Checks for the collision with middle-bottom
         elif character_rect.bottom > (screen.get_height() - 1) and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
             print("B")
+            await main(18, position= (mid_x, 11))
 
         # Checks for collison with middle-right
         elif character_rect.right > (screen.get_width() - 1) and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
             print("R")
+            await main(18, position= (11, mid_y))
 
         # Checks for collision with the middle-left
         elif character_rect.left < 1 and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
             print("L")
+            await main(18, position= (screen.get_width() - 10, mid_y // 2))
 
 
         # Check for collision with objects
@@ -279,4 +294,4 @@ async def main(seed):
 
 
 
-asyncio.run(main(seed=18))  # Enter any seed number here to generate a different terrain and object/enemy positions
+asyncio.run(main(seed=18, position=(0, 0)))  # Enter any seed number here to generate a different terrain and object/enemy positions

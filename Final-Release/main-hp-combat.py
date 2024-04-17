@@ -357,6 +357,8 @@ async def main(seed):
                 screen.blit(death_img, enemy_pos)
             else:
                 screen.blit(enemy_img1, enemy_pos)
+                pygame.draw.rect(screen, (200, 0, 0), (enemy_pos[0] - 10, enemy_pos[1] - 10, 80, 10))
+                pygame.draw.rect(screen, (0, 200, 0), (enemy_pos[0] - 10, enemy_pos[1] - 10, 80 * (enemy_hp[i]/10), 10))
 
 
         # Draw character

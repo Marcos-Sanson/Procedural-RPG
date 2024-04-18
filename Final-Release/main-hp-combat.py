@@ -113,14 +113,16 @@ async def main(seed):
     random.seed(seed)  # Set the random seed
 
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((1000, 700), pygame.RESIZABLE)  # Make the window resizable
+    # Make the window resizable
+    screen = pygame.display.set_mode((1000, 700), pygame.RESIZABLE)
     delta = 5
     x = y = 0
     counter = 0
 
     # Load character image
     character_img = pygame.image.load('character.png').convert_alpha()
-    character_img = pygame.transform.scale(character_img, (60, 80))  # Scale up character image
+    # Scale up character image
+    character_img = pygame.transform.scale(character_img, (60, 80))
     character_rect = character_img.get_rect()
     character_hp = 10
 
@@ -132,24 +134,36 @@ async def main(seed):
         weapon_rect = weapon_img.get_rect()
         return weapon_img, weapon_rect
 
-    weapon_slash_imgs = [pygame.transform.scale(pygame.image.load('slash.png').convert_alpha(), (40, 40)),
-                         pygame.transform.scale(pygame.image.load('slash.png').convert_alpha(), (30, 30))]
-
+    weapon_slash_imgs = [pygame.transform.scale(
+        pygame.image.load('slash.png').convert_alpha(), (40, 40)),
+                         pygame.transform.scale(
+                             pygame.image.load('slash.png').
+                             convert_alpha(), (30, 30))]
 
     # Load enemy images
     enemy_img1 = pygame.image.load('enemy1.png').convert_alpha()
-    enemy_img1 = pygame.transform.scale(enemy_img1, (60, 60))  # Scale up enemy image
+    # Scale up enemy image
+    enemy_img1 = pygame.transform.scale(enemy_img1, (60, 60))
     enemy_img2 = pygame.image.load('enemy2.png').convert_alpha()
-    enemy_img2 = pygame.transform.scale(enemy_img2, (60, 60))  # Scale up enemy image
-    enemy_death_imgs = [pygame.transform.scale(pygame.image.load('enemy_death1.png').convert_alpha(), (180, 240)),
-                        pygame.transform.scale(pygame.image.load('enemy_death2.png').convert_alpha(), (180, 240))]
+    # Scale up enemy image
+    enemy_img2 = pygame.transform.scale(enemy_img2, (60, 60))
+    enemy_death_imgs = [pygame.transform.scale
+                        (pygame.image.load('enemy_death1.png').convert_alpha(),
+                         (180, 240)),
+                        pygame.transform.scale(pygame.
+                                               image.load('enemy_death2.png')
+                                               .convert_alpha(), (180, 240))]
     enemy_hp = []
 
     # Load object images
     object_img = pygame.image.load('object.png').convert_alpha()
-    object_img = pygame.transform.scale(object_img, (50, 50))  # Scale up object image
-    object_collision_img = pygame.image.load('object_collision.png').convert_alpha()
-    object_collision_img = pygame.transform.scale(object_collision_img, (50, 50))  # Scale up collision object image
+    # Scale up object image
+    object_img = pygame.transform.scale(object_img, (50, 50))
+    object_collision_img = pygame.image.load(
+        'object_collision.png').convert_alpha()
+    # Scale up collision object image
+    object_collision_img = pygame.transform.scale(
+        object_collision_img, (50, 50))
 
     # Load background images for different terrains
     grass_img = pygame.image.load('grass.png').convert_alpha()
@@ -165,26 +179,32 @@ async def main(seed):
     num_clusters = random.randint(3, 5)  # Random number of clusters
     for _ in range(num_clusters):
         cluster_size = random.randint(2, 7)  # Random size for each cluster
-        cluster_x = random.randint(0, len(terrain_grid[0]) - cluster_size)  # Random x position for the cluster
-        cluster_y = random.randint(0, len(terrain_grid) - cluster_size)  # Random y position for the cluster
+        # Random x position for the cluster
+        cluster_x = random.randint(0, len(terrain_grid[0]) - cluster_size)
+        # Random y position for the cluster
+        cluster_y = random.randint(0, len(terrain_grid) - cluster_size)
         for i in range(cluster_y, cluster_y + cluster_size):
             for j in range(cluster_x, cluster_x + cluster_size):
                 terrain_grid[i][j] = water_img
 
     # This section doesn't work properly! Needs to be fixed.
     # Add outline to water tiles for collision detection
-    # Original code inspired by Marcus Møller (https://github.com/marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
+    # Original code inspired by Marcus Møller (https://github.com
+    # /marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
     for i in range(len(terrain_grid)):
         for j in range(len(terrain_grid[0])):
             if terrain_grid[i][j] == water_img:
-                # Check neighbors for grass tiles directly adjacent to water and mark them as outline
+                # Check neighbors for grass tiles directly
+                # adjacent to water and mark them as outline
                 if i > 0 and terrain_grid[i - 1][j] == grass_img:
                     terrain_grid[i - 1][j] = "outline"
-                if i < len(terrain_grid) - 1 and terrain_grid[i + 1][j] == grass_img:
+                if i < len(terrain_grid) - 1 and\
+                        terrain_grid[i + 1][j] == grass_img:
                     terrain_grid[i + 1][j] = "outline"
                 if j > 0 and terrain_grid[i][j - 1] == grass_img:
                     terrain_grid[i][j - 1] = "outline"
-                if j < len(terrain_grid[0]) - 1 and terrain_grid[i][j + 1] == grass_img:
+                if j < len(terrain_grid[0]) - 1 and\
+                        terrain_grid[i][j + 1] == grass_img:
                     terrain_grid[i][j + 1] = "outline"
 
     # Generate random positions for objects
@@ -195,7 +215,8 @@ async def main(seed):
         object_x = random.randint(0, len(terrain_grid[0]) - 1) * tile_size[0]
         object_y = random.randint(0, len(terrain_grid) - 1) * tile_size[1]
         object_positions.append((object_x, object_y))
-        object_collided.append(False)  # Initialize collision status as False for each object
+        # Initialize collision status as False for each object
+        object_collided.append(False)
 
     # Generate random positions for enemy characters
     num_enemies = random.randint(1, 3)  # Random number of enemies
@@ -206,12 +227,15 @@ async def main(seed):
         enemy_y = random.randint(0, len(terrain_grid) - 1) * tile_size[1]
         enemy_positions.append((enemy_x, enemy_y))
         enemy_hp.append(10)
-        enemy_collided.append(False)  # Initialize collision status as False for each enemy
+        # Initialize collision status as False for each enemy
+        enemy_collided.append(False)
 
     def attack_animation():
-        attack_index = (pygame.time.get_ticks() // 200) % len(weapon_slash_imgs)
+        attack_index = (pygame.time.get_ticks() // 200) % len(
+            weapon_slash_imgs)
         print("'slash'")
-        slash_imgs = pygame.transform.scale(weapon_slash_imgs[attack_index], (60, 60))
+        slash_imgs = pygame.transform.scale(weapon_slash_imgs[attack_index],
+                                            (60, 60))
         screen.blit(slash_imgs, r)
 
     cooldown = True
@@ -224,8 +248,11 @@ async def main(seed):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-            elif event.type == pygame.VIDEORESIZE:  # Handle window resize event
-                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)  # Update screen size
+            # Handle window resize event
+            elif event.type == pygame.VIDEORESIZE:
+                # Update screen size
+                screen = pygame.display.set_mode(
+                    (event.w, event.h), pygame.RESIZABLE)
 
         # Retrieving the range from the current equipped weapon
         reach = p1.get_range()
@@ -246,7 +273,8 @@ async def main(seed):
             return
         if keys[pygame.K_z]:
             for i, j in enemy_positions:
-                if x - reach < i < x + reach and y - reach < j < y + reach and cooldown:
+                if x - reach < i < x + reach and\
+                        y - reach < j < y + reach and cooldown:
                     enemy_hp[counter] -= p1.get_damage()
                     print("'slash'")
                     cooldown = False
@@ -279,7 +307,6 @@ async def main(seed):
         if timer == 0:
             cooldown = True
 
-
         # Check for out-of-bounds movement
         new_x = max(0, min(new_x, screen.get_width() - character_rect.width))
         new_y = max(0, min(new_y, screen.get_height() - character_rect.height))
@@ -287,12 +314,16 @@ async def main(seed):
         # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
-        scaled_tile_size = (screen.get_width() / len(terrain_grid[0]), screen.get_height() / len(terrain_grid))
+        scaled_tile_size = (screen.get_width() / len(terrain_grid[0]),
+                            screen.get_height() / len(terrain_grid))
         character_box = character_rect.move(new_x, new_y)
         for i in range(len(terrain_grid)):
             for j in range(len(terrain_grid[0])):
                 if terrain_grid[i][j] in [water_img, "outline"]:
-                    water_rect = pygame.Rect(j * scaled_tile_size[0], i * scaled_tile_size[1], scaled_tile_size[0], scaled_tile_size[1])
+                    water_rect = pygame.Rect(j * scaled_tile_size[0],
+                                             i * scaled_tile_size[1],
+                                             scaled_tile_size[0],
+                                             scaled_tile_size[1])
                     if character_box.colliderect(water_rect):
                         collision_with_water = True
                         break
@@ -307,14 +338,16 @@ async def main(seed):
 
         # Check for collision with objects
         for i, object_pos in enumerate(object_positions):
-            if not object_collided[i]:  # Only check collision if the object has not been collided with
+            # Only check collision if the object has not been collided with
+            if not object_collided[i]:
                 object_rect = object_img.get_rect(topleft=object_pos)
                 if character_rect.colliderect(object_rect):
                     object_collided[i] = True  # Mark object as collided
 
         # Check for collision with enemies
         '''for i, enemy_pos in enumerate(enemy_positions):
-            if not enemy_collided[i]:  # Only check collision if the enemy has not been collided with
+            if not enemy_collided[i]:
+            # Only check collision if the enemy has not been collided with
                 enemy_rect = enemy_img1.get_rect(topleft=enemy_pos)
                 if character_rect.colliderect(enemy_rect):
                     enemy_collided[i] = True  # Mark enemy as collided'''
@@ -325,16 +358,29 @@ async def main(seed):
             for j in range(-1, 2):
                 for row_idx, row in enumerate(terrain_grid):
                     for col_idx, tile_img in enumerate(row):
-                        if 0 <= (col_idx * tile_size[0] + i * len(terrain_grid[0]) * tile_size[0]) < screen.get_width() and \
-                                0 <= (row_idx * tile_size[1] + j * len(terrain_grid) * tile_size[1]) < screen.get_height():
+                        if 0 <= (col_idx * tile_size[0] + i *
+                                 len(terrain_grid[0]) *
+                                 tile_size[0]) < screen.get_width() \
+                                and 0 <= (row_idx * tile_size[1]
+                                          + j * len(terrain_grid)
+                                          * tile_size[1]) <\
+                                screen.get_height():
                             if tile_img != "outline":
                                 screen.blit(tile_img,
-                                            (col_idx * tile_size[0] + i * len(terrain_grid[0]) * tile_size[0],
-                                             row_idx * tile_size[1] + j * len(terrain_grid) * tile_size[1]))
+                                            (col_idx * tile_size[0] + i *
+                                             len(terrain_grid[0]) *
+                                             tile_size[0],
+                                             row_idx * tile_size[1] + j *
+                                             len(terrain_grid) *
+                                             tile_size[1]))
                             else:
-                                screen.blit(water_outline_img,  # Use custom water outline image
-                                            (col_idx * tile_size[0] + i * len(terrain_grid[0]) * tile_size[0],
-                                             row_idx * tile_size[1] + j * len(terrain_grid) * tile_size[1]))
+                                # Use custom water outline image
+                                screen.blit(water_outline_img,
+                                            (col_idx * tile_size[0]
+                                             + i * len(terrain_grid[0]) *
+                                             tile_size[0],
+                                             row_idx * tile_size[1] + j *
+                                             len(terrain_grid) * tile_size[1]))
 
         # Draw objects, replaced with collision image if collided
         for i, object_pos in enumerate(object_positions):
@@ -347,20 +393,27 @@ async def main(seed):
         for i, enemy_pos in enumerate(enemy_positions):
             '''if enemy_collided[i]:
                 # Draw death animation
-                death_index = (pygame.time.get_ticks() // 200) % len(enemy_death_imgs)
-                death_img = pygame.transform.scale(enemy_death_imgs[death_index], (60, 60))
+                death_index = (pygame.time.get_ticks() // 200
+                ) % len(enemy_death_imgs)
+                death_img = pygame.transform.scale(
+                enemy_death_imgs[death_index], (60, 60))
                 screen.blit(death_img, enemy_pos)
             else:'''
             if enemy_hp[i] < 0:
-                death_index = (pygame.time.get_ticks() // 200) % len(enemy_death_imgs)
-                death_img = pygame.transform.scale(enemy_death_imgs[death_index], (60, 60))
+                death_index = (pygame.time.get_ticks() // 200) % len(
+                    enemy_death_imgs)
+                death_img = pygame.transform.scale(
+                    enemy_death_imgs[death_index], (60, 60))
                 screen.blit(death_img, enemy_pos)
             else:
                 screen.blit(enemy_img1, enemy_pos)
-                pygame.draw.rect(screen, (200, 0, 0), (enemy_pos[0] - 10, enemy_pos[1] - 10, 80, 10))
-                pygame.draw.rect(screen, (0, 200, 0), (enemy_pos[0] - 10, enemy_pos[1] - 10, 80 * (enemy_hp[i]/10), 10))
-
-
+                pygame.draw.rect(screen, (200, 0, 0),
+                                 (enemy_pos[0] - 10,
+                                  enemy_pos[1] - 10, 80, 10))
+                pygame.draw.rect(screen, (0, 200, 0),
+                                 (enemy_pos[0] - 10,
+                                  enemy_pos[1] - 10,
+                                  80 * (enemy_hp[i] / 10), 10))
         # Draw character
         screen.blit(character_img, character_rect)
         screen.blit(w, r)
@@ -369,4 +422,6 @@ async def main(seed):
         clock.tick(60)  # Wait until next frame (at 60 FPS)
         await asyncio.sleep(0)  # Very important, and keep it 0
 
-asyncio.run(main(seed=11))  # Enter any seed number here to generate a different terrain and object/enemy positions
+# Enter any seed number here to generate a different
+# terrain and object/enemy positions
+asyncio.run(main(seed=11))

@@ -212,23 +212,26 @@ async def main(seed, position):
         # Checks for collision with the middle-top
         if character_rect.top < 1 and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
             print("T")
-            await main(18, position= (mid_x, mid_y))
+            await main(random_seed, position= (mid_x, mid_y))
 
 
         # Checks for the collision with middle-bottom
-        elif character_rect.bottom > (screen.get_height() - 1) and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
+        if character_rect.bottom > (screen.get_height() - 1) and ((abs(character_rect.left - mid_x) <= threshold) or (abs(character_rect.right - mid_x) <= threshold)):
             print("B")
-            await main(18, position= (mid_x, 11))
+            await main(random_seed, position= (mid_x, 11))
 
         # Checks for collison with middle-right
-        elif character_rect.right > (screen.get_width() - 1) and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
+        if character_rect.right > (screen.get_width() - 1) and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
             print("R")
-            await main(18, position= (11, mid_y))
+            await main(random_seed, position= (11, mid_y))
 
         # Checks for collision with the middle-left
-        elif character_rect.left < 1 and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
+        if character_rect.left < 1 and ((abs(character_rect.bottom - mid_y) <= threshold) or (abs(character_rect.top - mid_y) <= threshold)):
             print("L")
-            await main(18, position= (screen.get_width() - 10, mid_y // 2))
+            await main(random_seed, position= (screen.get_width() - 10, mid_y // 2))
+
+        if keys[pygame.K_r]:
+            await main(random_seed, position= (0, 0))
 
 
         # Check for collision with objects

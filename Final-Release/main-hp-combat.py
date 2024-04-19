@@ -314,7 +314,6 @@ async def main(seed):
             for j in range(cluster_x, cluster_x + cluster_size):
                 terrain_grid[i][j] = water_img
 
-    # This section doesn't work properly! Needs to be fixed.
     # Add outline to water tiles for collision detection
     # Original code inspired by Marcus Møller (https://github.com
     # /marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
@@ -438,7 +437,6 @@ async def main(seed):
         new_x = max(0, min(new_x, screen.get_width() - character_rect.width))
         new_y = max(0, min(new_y, screen.get_height() - character_rect.height))
 
-        # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
         scaled_tile_size = (screen.get_width() / len(terrain_grid[0]),
@@ -470,14 +468,6 @@ async def main(seed):
                 object_rect = object_img.get_rect(topleft=object_pos)
                 if character_rect.colliderect(object_rect):
                     object_collided[i] = True  # Mark object as collided
-
-        # Check for collision with enemies
-        '''for i, enemy_pos in enumerate(enemy_positions):
-            if not enemy_collided[i]:
-            # Only check collision if the enemy has not been collided with
-                enemy_rect = enemy_img1.get_rect(topleft=enemy_pos)
-                if character_rect.colliderect(enemy_rect):
-                    enemy_collided[i] = True  # Mark enemy as collided'''
 
         # Draw background and objects
         screen.fill((0, 0, 0))  # Clear screen with black color

@@ -1,3 +1,28 @@
+"""
+CIS 350 - Introduction to Software Engineering
+Winter 2024 Semester Project
+Authors: Marcos Sanson, Jerod Muilenburg, William Krol, Brendon Do, Ely Miller
+
+Prototype 2: Simple Procedurally-Generated Game
+
+A simple game where a character navigates through
+a terrain with objects and water.
+Has the following features:
+- Character movement with arrow keys or WASD
+- Collision detection with water and objects
+- Randomly generated terrain with clusters of water
+- Randomly generated objects with collision detection
+- Combat and HP system
+- Loading rooms when going off the edge of the screen
+
+Original sprite movement code from Dr. Byron DeVries.
+
+Original art, sprites, and images from Game Endeavor's
+Mystic Woods downloadable asset pack (Free Version):
+https://game-endeavor.itch.io/mystic-woods
+
+Date: March 25, 2024
+"""
 import pygame
 import asyncio
 import random
@@ -8,6 +33,13 @@ import time
 class Player:
 
     def __init__(self, HP, x, y):
+        """
+        Holds the information about the player.
+        Args:
+            HP (int): The amount of health the player has.
+            x (int): The horizontal position of the player.
+            y (int): The vertical position of the player.
+        """
         self.inventory = []
         self.HP = HP
         self.tool = None
@@ -17,37 +49,95 @@ class Player:
         self.y = y
 
     def get_inventory(self):
+        """
+        Gets the current inventory of the player.
+        Returns: List
+
+        """
         return self.inventory
 
     def add_inventory(self, item):
+        """
+        Adds the argument into the inventory.
+        Args:
+            item (Weapon): Weapon to be added into the inventory.
+
+        Returns: None
+
+        """
         self.inventory.append(item)
 
     def set_tool(self, num):
+        """
+        Puts the item from the inventory into the hand.
+        Args:
+            num (int): The number from the argu
+
+        Returns:
+
+        """
         self.tool = self.inventory[num]
         self.set_damage()
 
     def get_tool(self):
+        """
+        Gets the tool in players hand.
+        Returns: Weapon
+
+        """
         return self.tool
 
     def get_inventory_size(self):
+        """
+        Gets the size of inventory.
+        Returns: int
+
+        """
         return len(self.inventory)
 
     def set_damage(self):
+        """
+        Sets the damage the player does to the weapon in hand.
+        Returns: int
+
+        """
         self.damage = self.tool.get_damage()
 
     def get_damage(self):
+        """
+        Gets the damage stat of the weapon in hand of player.
+        Returns:
+
+        """
         return self.damage
 
     def get_cooldown(self):
+        """
+        Gets the cooldown stat of the weapon in the hand of the player.
+        Returns: int
+
+        """
         return self.tool.get_cooldown()
 
     def get_range(self):
+        """
+        Gets the range stat of the weapon in the hand of the player.
+        Returns: int
+
+        """
         return self.tool.get_range()
 
 
 class enemy:
 
     def __init__(self, HP, x, y):
+        """
+        Holds the location and the amount of health the enemies have.
+        Args:
+            HP (int): The amount of health the enemy has.
+            x (int): Is the horizontal position of the enemy.
+            y (int): Is the vertical position of the enemy.
+        """
         self.HP = HP
         self.x = x
         self.y = y
@@ -56,6 +146,17 @@ class enemy:
 class Weapon:
 
     def __init__(self, name, damage, cooldown, reach, img, scale):
+        """
+        Holds information for the weapons in the game.
+        Args:
+            name (string): Name of the weapon.
+            damage (int): How much damage the weapon deals to enemies.
+            cooldown (int): Amount of time before the
+            weapon can be swung again.
+            reach (int): How far the player can be to attack the enemy.
+            img (string): The image of the weapon.
+            scale (int): How to scale the weapon to the player model.
+        """
         self.name = name
         self.damage = damage
         self.cooldown = cooldown
@@ -64,18 +165,44 @@ class Weapon:
         self.scale = scale
 
     def get_damage(self):
+        """
+        Used to get the damage stat of a weapon.
+        Returns: int
+
+        """
         return self.damage
 
     def get_cooldown(self):
+        """
+        Gets the cooldown state of the weapon.
+        Returns: int
+
+        """
         return self.cooldown
 
     def get_range(self):
+        """
+        Gets the reach stat of the weapon.
+        Returns: int
+
+        """
         return self.reach
 
     def get_img(self):
+        """
+        Gets the image of the weapon
+        Returns: string
+
+        """
         return self.img
 
     def get_scale(self):
+        """
+        Gets the scaling variable of the weapon
+        for loading the image on screen.
+        Returns: int
+
+        """
         return self.scale
 
 
@@ -187,7 +314,6 @@ async def main(seed):
             for j in range(cluster_x, cluster_x + cluster_size):
                 terrain_grid[i][j] = water_img
 
-    # This section doesn't work properly! Needs to be fixed.
     # Add outline to water tiles for collision detection
     # Original code inspired by Marcus Møller (https://github.com
     # /marcusmoller/pyweek17-miner/blob/master/miner/engine.py#L202-L220)
@@ -311,7 +437,6 @@ async def main(seed):
         new_x = max(0, min(new_x, screen.get_width() - character_rect.width))
         new_y = max(0, min(new_y, screen.get_height() - character_rect.height))
 
-        # This doesn't work properly; needs to be fixed
         # Check for collision with water in the vicinity of the character
         collision_with_water = False
         scaled_tile_size = (screen.get_width() / len(terrain_grid[0]),
@@ -343,14 +468,6 @@ async def main(seed):
                 object_rect = object_img.get_rect(topleft=object_pos)
                 if character_rect.colliderect(object_rect):
                     object_collided[i] = True  # Mark object as collided
-
-        # Check for collision with enemies
-        '''for i, enemy_pos in enumerate(enemy_positions):
-            if not enemy_collided[i]:
-            # Only check collision if the enemy has not been collided with
-                enemy_rect = enemy_img1.get_rect(topleft=enemy_pos)
-                if character_rect.colliderect(enemy_rect):
-                    enemy_collided[i] = True  # Mark enemy as collided'''
 
         # Draw background and objects
         screen.fill((0, 0, 0))  # Clear screen with black color

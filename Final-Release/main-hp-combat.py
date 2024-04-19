@@ -5,7 +5,8 @@ Authors: Marcos Sanson, Jerod Muilenburg, William Krol, Brendon Do, Ely Miller
 
 Prototype 2: Simple Procedurally-Generated Game
 
-A simple game where a character navigates through a terrain with objects and water.
+A simple game where a character navigates through
+a terrain with objects and water.
 Has the following features:
 - Character movement with arrow keys or WASD
 - Collision detection with water and objects
@@ -16,7 +17,8 @@ Has the following features:
 
 Original sprite movement code from Dr. Byron DeVries.
 
-Original art, sprites, and images from Game Endeavor's Mystic Woods downloadable asset pack (Free Version):
+Original art, sprites, and images from Game Endeavor's
+Mystic Woods downloadable asset pack (Free Version):
 https://game-endeavor.itch.io/mystic-woods
 
 Date: March 25, 2024
@@ -149,7 +151,8 @@ class Weapon:
         Args:
             name (string): Name of the weapon.
             damage (int): How much damage the weapon deals to enemies.
-            cooldown (int): Amount of time before the weapon can be swung again.
+            cooldown (int): Amount of time before the
+            weapon can be swung again.
             reach (int): How far the player can be to attack the enemy.
             img (string): The image of the weapon.
             scale (int): How to scale the weapon to the player model.
@@ -195,7 +198,8 @@ class Weapon:
 
     def get_scale(self):
         """
-        Gets the scaling variable of the weapon for loading the image on screen.
+        Gets the scaling variable of the weapon
+        for loading the image on screen.
         Returns: int
 
         """

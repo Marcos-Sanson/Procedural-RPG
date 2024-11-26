@@ -1,84 +1,29 @@
-# CIS-350-Semester-Project
+# Procedurally-Generated 2D Role-Playing Game (RPG)
 
-## CIS 350 – Introduction to Software Engineering
+## Overview
 
-## Project: Procedurally-generated 2D Role-playing Game
-Developed by Marcos Sanson, Jerod Muilenburg, William Krol, Brendon Do, Ely Miller
-### CIS 350: Winter 2024
+A 2D role-playing game (RPG) where players control a customizable character navigating through procedurally-generated terrains filled with interactive objects and water bodies. The game features random encounters, quest-driven gameplay, and combat mechanics involving various creatures and monsters. 
 
-### Team & Project Information:
-- Cover page with project name and names of team members
-- Brief Project description
-- List of features supported in each release
-- Sample screenshots of application
-  - Draft: 10
-  - Final: 10
-  - Estimated Effort: 5%
+This game was developed as a team project to explore game development using Python and Pygame. The game is designed to be expanded with regular updates and feature enhancements.
 
-### Planning:
-- Software Process Model Used
-- Plan for Definition, Development, Verification, Maintenance & Umbrella Activities
-- Responsibilities/Roles of each team member
-- Gantt Chart of features / tasks
-  - Draft: 15
-  - Final: 10
-  - Estimated Effort: 10%
+## Features
 
-### Specification:
-- Use case diagram and use case descriptions
-- Requirements and traceability to use cases
-  - Draft: 15
-  - Final: 10
-  - Estimated Effort: 10%
+### Release 1:
+- Character movement using arrow keys or WASD
+- Collision detection with water and objects
+- Randomly generated terrain with water bodies
+- Randomly generated objects with collision detection
+- Randomly generated enemies with health systems and defeat animations
+- Proper weapon combat with cooldowns
+- Multiple weapon types, damages, and ranges
+- Weapon images for each type
+- Health bars for enemies
 
-### Design:
-- Class diagrams and class descriptions
-- Function decomposition and descriptions
-  - Draft: 30
-  - Final: 20
-  - Estimated Effort: 5%
+## Development
 
-### Development:
-- Code standards report and assessment
-- Static analysis report and assessment
-- Generated code documentation in HTML or other output format
-  - Draft: 10
-  - Final: 40
-  - Estimated Effort: 15%
+This game was developed using Python and the Pygame library. It follows a waterfall development model, starting with prototyping and iterative development, progressing through testing, and finally delivering the finished product with regular updates.
 
-### Configuration Management:
-- Git log for the remote repository
-- URL to the remote Git repository
-  - Draft: 10
-  - Final: 15
-  - Estimated Effort: 10%
-
-### Verification:
-- Unit and System / Integration Tests
-- Code coverage reports from:
-  - Unit testing, and
-  - System / Integration testing
-- Requirements Traceability
-  - Draft: 5
-  - Final: 45
-  - Estimated Effort: 20%
-
-### Customer Acceptance Criteria:
-- Release Demo: How well do features work?
-  - Draft: 5
-  - Final: 30
-  - Estimated Effort: N/A
-
-### Project Status / Postmortem:
-- Self-reflection and team reflection by each team member
-- Current Earned Value and Metrics
-- Justification of any imperfect code coverage, bug reports, ...
-- Lessons Learned
-  - Draft: 25
-  - Final: 45
-  - Estimated Effort: 25%
-
-### Total
-- Draft: 125
-- Final: 225
-- Estimated Effort: 100%
+### Key Technologies:
+- **Python**: Primary language for development
+- **Pygame**: Game development library used for rendering graphics, managing events, and handling user input
+- **Git**: Version control for code management

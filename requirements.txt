@@ -1,0 +1,2 @@
+# Core game libraries
+pygame==2.5.2

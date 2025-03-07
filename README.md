@@ -28,10 +28,9 @@ This game was developed as a team project using Python and Pygame as part of the
 - **Character movement** using arrow keys or WASD
 - **Collision detection** for water and objects
 - **Procedurally-generated terrain** with diverse water formations
-- **Random object generation** with collision mechanics
+- **Random object generation** with treasure chest opening mechanics
 - **Dynamic enemies** with health bars and defeat animations
 - **Weapon-based combat system** with cooldowns and multiple weapon types
-- **Health bars** for enemies
 
 ### Planned Features:
 - Character customization options
@@ -93,3 +92,6 @@ This game was developed using Python and the Pygame library. It follows a waterf
 ## Acknowledgments
 - Thanks to all team members who contributed to this project!
 - Pygame community for their excellent documentation and support!
+- Original sprite movement code: Dr. Byron DeVries, Associate Professor of Computer Science, Grand Valley State University
+- Artwork & Sprites: Game Endeavor's Mystic Woods asset pack (Free Version)  
+  https://game-endeavor.itch.io/mystic-woods  
